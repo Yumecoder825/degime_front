@@ -11,9 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: ssh key generate
-        run: echo "$SSH_PRIVATE_KEY" > key && chmod 600 key
+        run: echo "$CORESERVER_PRIVATE_KEY" > key && chmod 600 key
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.CORESERVER_PRIVATE_KEY }}
+          CORESERVER_PRIVATE_KEY: ${{ secrets.CORESERVER_PRIVATE_KEY }}
       - name: rsync deploy
         run: rsync -auzrv -e "ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" --delete ./public_html/* degime@v2007.coreserver.jp:/home/degime/domains/degime.net/public_html
       - name: rsync deploy2
