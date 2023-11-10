@@ -14,6 +14,8 @@ jobs:
         run: echo "$CORESERVER_PRIVATE_KEY" > key && chmod 600 key
         env:
           CORESERVER_PRIVATE_KEY: ${{ secrets.CORESERVER_PRIVATE_KEY }}
+      - name: show ssh key
+        run: cat key
       - name: rsync deploy
         run: rsync -auzrv -e "ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" --delete ./public_html/* degime@v2007.coreserver.jp:/home/degime/domains/degime.net/public_html
       - name: rsync deploy2
