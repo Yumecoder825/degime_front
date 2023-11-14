@@ -3,7 +3,7 @@ name: deploy to remote
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
@@ -11,10 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: ssh key generate
-        run: echo "$SSH_PRIVATE_KEY" > key && chmod 600 key
+        run: echo "$CORESERVER_SSH_KEY" > key && chmod 600 key
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.CORESERVER_PRIVATE_KEY }}
+          CORESERVER_SSH_KEY: ${{ secrets.CORESERVER_SSH_KEY }}
       - name: rsync deploy
-        run: rsync -auzrv -e "ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 10022" --delete ./public_html/* degime@v2007.coreserver.jp:/home/degime/domains/degime.net/public_html
+        run: rsync -rptgDvz --delete -e "ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./public_html/* degime@v2007.coreserver.jp:/home/degime/domains/degime.net/public_html
       - name: rsync deploy2
-        run: rsync -auzrv -e "ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 10022" --delete ./profile-link/* degime@v2007.coreserver.jp:/home/degime/domains/degime.net/profile-link
+        run: rsync -rptgDvz --delete -e "ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./profile-link/* degime@v2007.coreserver.jp:/home/degime/domains/degime.net/profile-link
