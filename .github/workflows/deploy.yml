@@ -1,0 +1,20 @@
+name: deploy to remote
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: ssh key generate
+        run: echo "$CORESERVER_SSH_KEY" > key && chmod 600 key
+        env:
+          CORESERVER_SSH_KEY: ${{ secrets.CORESERVER_SSH_KEY }}
+      - name: rsync deploy
+        run: rsync -rptgDvz --delete -e "ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./public_html/* degime@v2007.coreserver.jp:/home/degime/domains/degime.net/public_html
+      - name: rsync deploy2
+        run: rsync -rptgDvz --delete -e "ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./profile-link/* degime@v2007.coreserver.jp:/home/degime/domains/degime.net/profile-link
