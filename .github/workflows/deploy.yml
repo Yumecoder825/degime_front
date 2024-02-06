@@ -17,4 +17,4 @@ jobs:
       - name: rsync deploy
         run: rsync -rptgDvz --delete -e "ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./public_html/* degime@v2007.coreserver.jp:/home/degime/domains/degime.net/public_html
       - name: rsync deploy2
-        run: rsync -rptgDvz --delete -e "ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./profile_link/* degime@v2007.coreserver.jp:/home/degime/domains/degime.net/profile_link
+        run: rsync -rptgDvz --delete -e "ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./profile-link/* degime@v2007.coreserver.jp:/home/degime/domains/degime.net/profile-link
