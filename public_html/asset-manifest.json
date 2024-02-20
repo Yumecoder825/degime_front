@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.6e5aa401.css",
-    "main.js": "/static/js/main.b29f096c.js",
+    "main.css": "/static/css/main.b2325de8.css",
+    "main.js": "/static/js/main.eee49f42.js",
     "static/js/23.2e218f2b.chunk.js": "/static/js/23.2e218f2b.chunk.js",
     "static/js/81.d49c47b2.chunk.js": "/static/js/81.d49c47b2.chunk.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.bacca352.chunk.js",
@@ -19,17 +19,17 @@
     "reactPlayerPreview.js": "/static/js/reactPlayerPreview.7aecb89a.chunk.js",
     "static/js/496.9d948223.chunk.js": "/static/js/496.9d948223.chunk.js",
     "static/media/big-image1.jpeg": "/static/media/big-image1.12f95f128da3f0cb375c.jpeg",
+    "static/media/logo192.png": "/static/media/logo192.9a2093f51b651e11193f.png",
     "static/media/FamiljenGroteskGF-Regular.ttf": "/static/media/FamiljenGroteskGF-Regular.a8bd56dc617dddd432ea.ttf",
     "static/media/FamiljenGroteskGF-Regular.otf": "/static/media/FamiljenGroteskGF-Regular.dc6edca2a73c89e1eaf0.otf",
-    "static/media/logo.png": "/static/media/logo.4466adf87feb4fe47f6e.png",
-    "static/media/favicon.ico": "/static/media/favicon.e17aa5f483e458c3355d.ico",
+    "static/media/favicon.ico": "/static/media/favicon.e76d8edfcbc0b6a310fe.ico",
     "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/index.html",
-    "main.6e5aa401.css.map": "/static/css/main.6e5aa401.css.map",
-    "main.b29f096c.js.map": "/static/js/main.b29f096c.js.map",
+    "main.b2325de8.css.map": "/static/css/main.b2325de8.css.map",
+    "main.eee49f42.js.map": "/static/js/main.eee49f42.js.map",
     "23.2e218f2b.chunk.js.map": "/static/js/23.2e218f2b.chunk.js.map",
     "81.d49c47b2.chunk.js.map": "/static/js/81.d49c47b2.chunk.js.map",
     "reactPlayerYouTube.bacca352.chunk.js.map": "/static/js/reactPlayerYouTube.bacca352.chunk.js.map",
@@ -48,7 +48,7 @@
     "496.9d948223.chunk.js.map": "/static/js/496.9d948223.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6e5aa401.css",
-    "static/js/main.b29f096c.js"
+    "static/css/main.b2325de8.css",
+    "static/js/main.eee49f42.js"
   ]
 }
