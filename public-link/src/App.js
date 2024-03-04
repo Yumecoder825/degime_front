@@ -43,8 +43,18 @@ import PublicShow from "./components/PublicShow.js";
 import Pagenotfound from "./pages/Pagenotfound.js";
 import Setting from "./pages/Setting.js";
 import ChatAddList from "./pages/chat/ChatAddList.js";
+import ProductList from "./pages/admin/product/ProductList";
+import NewProduct from "./pages/admin/product/NewProduct";
+import UpdateProduct from "./pages/admin/product/UpdateProduct";
+
 
 import { profileButton, pendingList, acceptedList } from "./data.js";
+import EmailSetting from "./pages/admin/email/EmailSetting";
+import NewEmail from "./pages/admin/email/NewEmail";
+import SalesList from "./pages/admin/sales/SalesList";
+import ShippingList from "./pages/admin/orders/ShippingList";
+import ShippedList from "./pages/admin/orders/ShippedList";
+import CanceledList from "./pages/admin/orders/CanceledList";
 /**
  * Define the "App" component as a function.
  */
@@ -108,11 +118,26 @@ const App = () => {
             <Route path="contract/4" element={<ContractFour />}/>
           </Route>
           <Route path="/admin" element={<Adminlayout />}>
-            <Route index element={<Navigate to="ユーザーリスト" />} />
-            <Route path="ユーザーリスト" element={<Userlist />} />
-            <Route path="系譜一覧" element={<Gennealogylist />} />
-            <Route path="１次代理店" element={<Primaryagency />} />
-            <Route path="２次代理店" element={<Secondaryagency />} />
+            <Route index element={<Navigate to="users" />} />
+            <Route path="users" element={<Userlist />} />
+            <Route path="genealogies" element={<Gennealogylist />} />
+            <Route path="primaryagency" element={<Primaryagency />} />
+            <Route path="secondaryagency" element={<Secondaryagency />} />
+            <Route path="products">
+              <Route path="" element={<ProductList />} />
+              <Route path="new" element={<NewProduct />} />
+              <Route path="edit" element={<UpdateProduct />} />
+            </Route>
+            <Route path="orders">
+              <Route path="shipping" element={<ShippingList />} />
+              <Route path="shipped" element={<ShippedList />} />
+              <Route path="canceled" element={<CanceledList />} />
+            </Route>
+            <Route path="sales" element={<SalesList />} />
+            <Route path="emails">
+              <Route path="" element={<EmailSetting />} />
+              <Route path="new" element={<NewEmail />} />
+            </Route>
           </Route>
           <Route path="data" element={<Chartlist />} />
           <Route path="mail" element={<Emailmarketing />} />
