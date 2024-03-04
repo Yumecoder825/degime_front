@@ -26,11 +26,7 @@ const Dashboard = (props) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   //localStorage data
-  const [currentUser, setCurrentUser] = useState({
-    username: localStorage.getItem('username') ? localStorage.getItem('username') : "",
-    email: localStorage.getItem('email') ? localStorage.getItem('email') : "",
-    avatar: localStorage.getItem('avatar') ? localStorage.getItem('avatar') : null,
-  })
+  const [currentUser, setCurrentUser] = useState(null)
 
   // Login/Register Data
   const [registerData, setRegisterData] = useState({
@@ -75,19 +71,31 @@ const Dashboard = (props) => {
   };
 
   //Is admin?
-  useEffect(()=>{
-    currentUser.email === 'kobayasitorao111@gmail.com' ? setIsAdmin(true) : setIsAdmin(false)
-  }, [isAdmin, currentUser])
+  useEffect(()=> {
+    const userStr = localStorage.getItem("currentUser");
+    if (userStr) {
+      const curUser = JSON.parse(userStr);
+      if (curUser) {
+        setCurrentUser(curUser);
+        curUser.is_superuser ? setIsAdmin(true) : setIsAdmin(false)
+      }
+    }
+  }, [])
+
+  const storeUserToLocalStorage = (user) => {
+    localStorage.setItem("token", user.token);
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    localStorage.setItem("isLogin", true);
+    setCurrentUser(user);
+    user.is_superuser ? setIsAdmin(true) : setIsAdmin(false)
+  }
 
   //If Verification is successfull
   const handleShowVerifyModal = (isSuccess) =>{
     if(isSuccess)  {
       setShowVerifyModal(false);
       const newUser = {username:registerData.username, email:registerData.email, avatar:"/image/user_default.png"};
-      setCurrentUser(newUser)
-      localStorage.setItem('username', registerData.username);
-      localStorage.setItem('email', registerData.email);
-      localStorage.setItem('avatar', "/image/user_default.png");
+      storeUserToLocalStorage(registerData);
     }
   }
 
@@ -169,12 +177,8 @@ const Dashboard = (props) => {
           loginData
         );
         toast.success(`${response.data.username} is successfully logined!`);
-        localStorage.setItem('token', response.data.token);
-        setCurrentUser({username:response.data.username, avatar:response.data.avatar, email:loginData.username});
-        localStorage.setItem('username', response.data.username);
-        localStorage.setItem('email', response.data.email);
-        localStorage.setItem('avatar', response.data.avatar);
-        localStorage.setItem('isLogin', true);
+        const user = response.data;
+        storeUserToLocalStorage(user);
         setShowModal(false);
         console.log(response.data);
       } catch (error) {
@@ -191,10 +195,8 @@ const Dashboard = (props) => {
             registerData
           );
           toast.success(`${registerData.username} is successfully registered!`);
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('email', registerData.email);
-          localStorage.setItem('username', registerData.username);
-          localStorage.setItem('isLogin', true);
+          const user = response.data;
+          storeUserToLocalStorage(user);
           setShowModal(false);
           setShowVerifyModal(true);
           console.log(response.data);
@@ -205,6 +207,17 @@ const Dashboard = (props) => {
       }
     }
   };
+
+  const onLogout = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setCurrentUser(null);
+    setIsAdmin(false);
+    localStorage.setItem('token', null);
+    localStorage.setItem('currentUser', null);
+    localStorage.setItem('isLogin', false);
+  }
 
   return (
     <div className="Dashboard">
@@ -226,13 +239,13 @@ const Dashboard = (props) => {
           <img
             className="userAvatar"
             alt="userAvatar"
-            src={(currentUser.avatar === "null" || currentUser.avatar === null) ? "/image/user_default.png" : currentUser.avatar}
+            src={(!currentUser || currentUser.avatar === "null" || currentUser.avatar === null) ? "/image/user_default.png" : currentUser.avatar}
           ></img>
         </div>
         <div className="userInformation">
-          <div className="userName">{currentUser.username}</div>
+          <div className="userName">{currentUser && currentUser.username}</div>
           <div className="flex items-center justify-center ml-3">
-            <div className="userEmail" id="copyPane">{localStorage.getItem('urlName') === null ? <Link onClick={()=>setShowModal(true)} className="hover:underline hover:text-sky-400 active:text-sky-700" >ログインするにはここに</Link> : `https://degime.net/${localStorage.getItem('urlName')}`}</div>
+            <div className="userEmail" id="copyPane">{localStorage.getItem('urlName') === null ? <Link onClick={()=>setShowModal(true)} to="" className="hover:underline hover:text-sky-400 active:text-sky-700" >ログインするにはここに</Link> : `https://degime.net/${localStorage.getItem('urlName')}`}</div>
             <div
               onClick={handleCopy}
               className="w-[20px] inline-block cursor-pointer ml-2"
@@ -269,6 +282,14 @@ const Dashboard = (props) => {
                   削除一覧
                 </Link>
               </div>
+              {
+                currentUser &&
+                <div className="deleteList list">
+                  <Link className="listLink" to="" onClick={onLogout}>
+                    ログアウト
+                  </Link>
+                </div>
+              }
             </div>
           )}
         </div>
