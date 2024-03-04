@@ -4,8 +4,8 @@ import 'react-quill/dist/quill.snow.css';
 
 
 
-export const myConfig = { apiUrl: 'http://194.87.199.12:5000' };
-// export const myConfig = { apiUrl: 'http://localhost:8000/api' };
+// export const myConfig = { apiUrl: 'http://194.87.199.12:5000' };
+export const myConfig = { apiUrl: 'http://localhost:8000/api' };
 export const myPut = async (url, body, header) => {
   try {
     const response = await axios.put(
