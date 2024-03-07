@@ -5,9 +5,6 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Modal from '@mui/material/Modal';
 
-import axios from "axios";
-import { myConfig } from "../utilities/config";
-
 import {
   TERipple,
   TEModal,
@@ -44,7 +41,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { ChromePicker } from 'react-color';  // Import ChromePicker from react-color
+import { ChromePicker } from 'react-color';
+import {Apis} from "../api";  // Import ChromePicker from react-color
 
 
 const EditOnline = ({profileButton}) => {
@@ -378,11 +376,9 @@ const EditOnline = ({profileButton}) => {
     console.log(completepublishData);
 
     try {
-      const response = await axios.put(
-        `${myConfig.apiUrl}/social/private/online`,
-        completepublishData,{
-          headers:{Authorization: `token ${localStorage.getItem('token')}`}, //here I want to pass Bearer Token
-        }
+      const response = await Apis.myPut(
+        `social/private/online`,
+        completepublishData
       );
       toast.success("Successfully published!");
       console.log("Response:------", response.data);

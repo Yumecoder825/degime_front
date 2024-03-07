@@ -55,6 +55,9 @@ import SalesList from "./pages/admin/sales/SalesList";
 import ShippingList from "./pages/admin/orders/ShippingList";
 import ShippedList from "./pages/admin/orders/ShippedList";
 import CanceledList from "./pages/admin/orders/CanceledList";
+import DashboardLayout from "./pages/DashboardLayout";
+import AgencyManagement from "./pages/admin/AgencyManagement";
+import AdminSetting from "./pages/admin/AdminSetting";
 /**
  * Define the "App" component as a function.
  */
@@ -82,41 +85,45 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} /> */}
           <Route path='*' element={<Pagenotfound />} />
-          <Route path="/" element={<Navigate replace to="/dashboard" />} />
-          <Route path="/dashboard" redirect element={<Dashboard contact_badge = {4} chat_badge = {8} />} />
+          <Route path="/" redirect element={<DashboardLayout />}>
+            <Route index element={<Navigate to="dashboard" />} />
+            <Route path="dashboard" element={<Dashboard/>} />
+            <Route path="data" element={<Chartlist />} />
+            <Route path="setting" element={<Setting />} />
+            <Route path="contact/*" element={<ContactList />} />
+            <Route path="/chat" >
+              <Route index element={<Navigate to="list" />} />
+              <Route path="list" element={<Chatlist pendingList={pendingList} acceptedList = {acceptedList}  />} />
+              <Route path="channel" element={<Chatpane />}/>
+              <Route path="add" element={<ChatAddList />} />
+            </Route>
+            <Route path="/shop" >
+              <Route index element={<Navigate to="list" />} />
+              <Route path="list" element={<ShopList  />} />
+              <Route path="detail" element={<Shopdetail />}/>
+              <Route path="contract/1" element={<ContractOne />}/>
+              <Route path="contract/2" element={<ContractTwo />}/>
+              <Route path="contract/3" element={<ContractThree />}/>
+              <Route path="contract/4" element={<ContractFour />}/>
+            </Route>
+            <Route path="/online" element={<Online/>} />
+            <Route path="/social" element={<Social/>} />
+            <Route path="/editonline" element={<EditOnline profileButton={profileButton}/>} />
+            <Route path="/editsocial" element={<EditSocial profileButton={profileButton}/>} />
+            <Route path="/layout" element={<Layout contact_badge = {4} chat_badge = {8}/>} >
+              <Route path="list" >
+                <Route index element={<Navigate to="nocontactlist" />} />
+                <Route path="nocontactlist" element={<NocontactList/>} />
+                <Route path="deletedlist" element={<DeletedList  />} />
+                <Route path="blocklist" element={<BlockList  />} />
+              </Route>
+            </Route>
+          </Route>
           <Route path="/login" element={<Login/>} />
           {/* <Route path="/useful" element={<Useful/>} /> */}
           <Route path="/register" element={<Register/>} />
-          <Route path="/online" element={<Online/>} />
-          <Route path="/social" element={<Social/>} />
-          <Route path="/editonline" element={<EditOnline profileButton={profileButton}/>} />
-          <Route path="/editsocial" element={<EditSocial profileButton={profileButton}/>} />
 
           <Route path="/useful" element={<Useful/>} />
-          <Route path="/layout" element={<Layout contact_badge = {4} chat_badge = {8}/>} >
-            <Route path="list" >
-              <Route index element={<Navigate to="nocontactlist" />} />
-              <Route path="nocontactlist" element={<NocontactList/>} />
-              <Route path="deletedlist" element={<DeletedList  />} />
-              <Route path="blocklist" element={<BlockList  />} />
-            </Route>
-          </Route>
-          <Route path="contact/*" element={<ContactList />} />
-          <Route path="/chat" >
-            <Route index element={<Navigate to="list" />} />
-            <Route path="list" element={<Chatlist pendingList={pendingList} acceptedList = {acceptedList}  />} />
-            <Route path="channel" element={<Chatpane />}/>
-            <Route path="add" element={<ChatAddList />} />
-          </Route>
-          <Route path="/shop" >
-            <Route index element={<Navigate to="list" />} />
-            <Route path="list" element={<ShopList  />} />
-            <Route path="detail" element={<Shopdetail />}/>
-            <Route path="contract/1" element={<ContractOne />}/>
-            <Route path="contract/2" element={<ContractTwo />}/>
-            <Route path="contract/3" element={<ContractThree />}/>
-            <Route path="contract/4" element={<ContractFour />}/>
-          </Route>
           <Route path="/admin" element={<Adminlayout />}>
             <Route index element={<Navigate to="users" />} />
             <Route path="users" element={<Userlist />} />
@@ -138,11 +145,11 @@ const App = () => {
               <Route path="" element={<EmailSetting />} />
               <Route path="new" element={<NewEmail />} />
             </Route>
+            <Route path="agency" element={<AgencyManagement />} />
+            <Route path="setting" element={<AdminSetting />} />
           </Route>
-          <Route path="data" element={<Chartlist />} />
           <Route path="mail" element={<Emailmarketing />} />
           <Route path="public/:url_name" element={<PublicShow />} />
-          <Route path="setting" element={<Setting />} />
         </Routes>
 
     </div>

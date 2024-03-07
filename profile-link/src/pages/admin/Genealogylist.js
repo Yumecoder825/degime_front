@@ -4,32 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import UserListTable from '../../components/userlistTable';
 import { CSVLink } from "react-csv";
-
-
-export function CustomTabPanel({ children, value, index, ...other }) {
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box >
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-}
-
-export function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+import {a11yProps, CustomTabPanel} from "../../components/TabPanel";
 
 export default function Gennealogylist() {
   const [value, setValue] = useState(0);

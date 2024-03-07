@@ -6,6 +6,7 @@ import PublicView from './PublicView';
 import PublicViewSocial from './PublicViewSocial';
 import { TERipple } from "tw-elements-react";
 import { useNavigate } from "react-router-dom";
+import {Apis} from "../api";
 
 export default function PublicShow() {
   const navigate = useNavigate();
@@ -53,8 +54,8 @@ export default function PublicShow() {
     const parts = current_url.split("/");
     const desiredPart = parts[parts.length - 1];
     try {
-      const response = await axios.get(
-        `${myConfig.apiUrl}/social/public/online?url_name=${desiredPart}`
+      const response = await Apis.myGet(
+        `social/public/online?url_name=${desiredPart}`
       );
       toast.success( `${response.data[0].user}'s Online Profile found!`);
       // console.log("ShowData: ", response.data[0]);
@@ -63,8 +64,8 @@ export default function PublicShow() {
       setShowData(response.data[0]);
     } catch (error) {
       try {
-        const response = await axios.get(
-          `${myConfig.apiUrl}/social/public/snstree?url_name=${desiredPart}`
+        const response = await Apis.myGet(
+          `social/public/snstree?url_name=${desiredPart}`
         );
         toast.success( `${response.data[0].user}'s Social Profile found!`);
         // console.log("ShowData: ", response.data[0]);
@@ -90,12 +91,9 @@ export default function PublicShow() {
   const handleSave = async () => {
     if(localStorage.getItem('isLogin')){
       try {
-        const response = await axios.put(
-          `${myConfig.apiUrl}/social/private/contactdata`,
-          {member:showData.user},
-          {
-            headers:{Authorization:`token ${localStorage.getItem('token')}`}
-          }
+        const response = await Apis.myPut(
+          `social/private/contactdata`,
+          {member:showData.user}
         );
         toast.success('Successfully saved.');
         console.log(response.data);

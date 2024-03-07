@@ -4,16 +4,12 @@ import { myConfig } from '../../utilities/config'
 // import { toast } from 'react-toastify'
 
 import Contactitem from '../../components/Contactitem'
+import {Apis} from "../../api";
 export default function DeletedList() {
   const [deletedList, setDeletedList] = useState([]);
   const getDatafromDatabase = async () =>{
     try {
-      const response = await axios.get(
-        `${myConfig.apiUrl}/social/private/contactdata?block_setting=Deleted`,
-        {
-          headers:{Authorization: `token ${localStorage.getItem('token')}`}, //here I want to pass Bearer Token
-        }
-      );
+      const response = await Apis.myGet(`social/private/contactdata?block_setting=Deleted`);
       // console.log("ShowData: ", response.data[0]);
       // console.log("contactData: ", response.data);
       setDeletedList(response.data);
@@ -21,7 +17,7 @@ export default function DeletedList() {
       return response.data;
     } catch (error) {
       // toast.error(error.message);
-      error.response.status === 404 && setDeletedList([]);
+      setDeletedList([]);
       console.error(error.message);
     }
   }

@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { myPut } from '../utilities/config';
+import {Apis} from "../api";
 
 export default function Chatitem({url, username, content, is_online, date, onClick, isCreateShow, isTrashShow, tab, id, isSelectedState, isLongPressedState}) {
-  const header = {Authorization: `token ${localStorage.getItem('token')}`};
   const [isSelected, setisSelected] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isShow, setIsShow] = useState(false);
@@ -53,7 +52,7 @@ export default function Chatitem({url, username, content, is_online, date, onCli
   const handleApply = async () => {
     const putURL = 'social/private/contactdata?is_chat_available=True';
     const body = {member:username};
-    const data = myPut(putURL, body, header);
+    const data = await Apis.myPut(putURL, body);
     data && setIsHidden(true);
     setIsModalOpen(false);
     console.log(data);
