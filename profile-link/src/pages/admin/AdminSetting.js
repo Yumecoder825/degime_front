@@ -21,13 +21,15 @@ export default function AdminSetting() {
                             fr.readAsDataURL(event.target.files[0]);
                         }
                     }}/>
-                    {
-                        dashboardTopPCImages.map((img, index) => <div className="relative max-w-[400px] mt-2">
-                            <img src={img} alt=""/>
-                            <Close className="absolute -right-8 top-0 cursor-pointer"
-                                   onClick={() => setDashboardTopPCImages(dashboardTopPCImages.slice(0, index).concat(dashboardTopPCImages.slice(index + 1)))}/>
-                        </div>)
-                    }
+                    <div className="flex flex-wrap gap-8">
+                        {
+                            dashboardTopPCImages.map((img, index) => <div className="relative max-w-[400px] mt-2">
+                                <img src={img} alt=""/>
+                                <Close className="absolute right-2 top-2 cursor-pointer bg-white rounded-full p-1"
+                                       onClick={() => setDashboardTopPCImages(dashboardTopPCImages.slice(0, index).concat(dashboardTopPCImages.slice(index + 1)))}/>
+                            </div>)
+                        }
+                    </div>
                 </div>
             </div>
 
@@ -44,13 +46,15 @@ export default function AdminSetting() {
                             fr.readAsDataURL(event.target.files[0]);
                         }
                     }}/>
-                    {
-                        dashboardTopMobileImages.map((img, index) => <div className="relative max-w-[400px] mt-2">
-                            <img src={img} alt=""/>
-                            <Close className="absolute -right-8 top-0 cursor-pointer"
-                                   onClick={() => setDashboardTopMobileImages(dashboardTopMobileImages.slice(0, index).concat(dashboardTopMobileImages.slice(index + 1)))}/>
-                        </div>)
-                    }
+                    <div className="flex flex-wrap gap-8">
+                        {
+                            dashboardTopMobileImages.map((img, index) => <div className="relative max-w-[400px] mt-2">
+                                <img src={img} alt=""/>
+                                <Close className="absolute right-2 top-2 cursor-pointer bg-white rounded-full p-1"
+                                       onClick={() => setDashboardTopMobileImages(dashboardTopMobileImages.slice(0, index).concat(dashboardTopMobileImages.slice(index + 1)))}/>
+                            </div>)
+                        }
+                    </div>
                 </div>
             </div>
 
@@ -67,13 +71,15 @@ export default function AdminSetting() {
                             fr.readAsDataURL(event.target.files[0]);
                         }
                     }}/>
-                    {
-                        shopTopImages.map((img, index) => <div className="relative max-w-[400px] mt-2">
-                            <img src={img} alt=""/>
-                            <Close className="absolute -right-8 top-0 cursor-pointer"
-                                   onClick={() => setShopTopImages(shopTopImages.slice(0, index).concat(shopTopImages.slice(index + 1)))}/>
-                        </div>)
-                    }
+                    <div className="flex flex-wrap gap-8">
+                        {
+                            shopTopImages.map((img, index) => <div className="relative max-w-[400px] mt-2">
+                                <img src={img} alt=""/>
+                                <Close className="absolute right-2 top-2 cursor-pointer bg-white rounded-full p-1"
+                                       onClick={() => setShopTopImages(shopTopImages.slice(0, index).concat(shopTopImages.slice(index + 1)))}/>
+                            </div>)
+                        }
+                    </div>
                 </div>
             </div>
 

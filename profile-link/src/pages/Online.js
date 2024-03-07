@@ -137,15 +137,15 @@ const Online = () => {
         alt="group02"
       ></img>
       <div className="w-full h-16"></div>
-      <div className=" bg-grey-100 w-full h-16 text-center bottom-0 fixed ">
-        <Link
-          to="/editonline"
-          className=" text-white bg-sky-400 rounded-md h-10 px-4 py-2 mt-3 translate-x-[-50%] min-[980px]:left-[384px] min-[980px]:translate-x-[0px] min-[980px]:absolute"
-        >
-          このテーマを選択する
-        </Link>
-        {/* <div className="h-1 w-24 bg-black rounded-full"></div> */}
-      </div>
+      {/*<div className=" bg-grey-100 w-full h-16 text-center bottom-0 fixed ">*/}
+      {/*  <Link*/}
+      {/*    to="/editonline"*/}
+      {/*    className=" text-white bg-sky-400 rounded-md h-10 px-4 py-2 mt-3 translate-x-[-50%] min-[980px]:left-[384px] min-[980px]:translate-x-[0px] min-[980px]:absolute"*/}
+      {/*  >*/}
+      {/*    このテーマを選択する*/}
+      {/*  </Link>*/}
+      {/*  /!* <div className="h-1 w-24 bg-black rounded-full"></div> *!/*/}
+      {/*</div>*/}
     </div>
   );
 };
