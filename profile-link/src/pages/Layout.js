@@ -25,7 +25,7 @@ export default function Layout() {
     };
   }, []);
   return (
-    <div className="Dashboard">
+    <div className="Dashboard relative">
       {/* <div>
             </div> */}
       <div className="selectiveBackground">

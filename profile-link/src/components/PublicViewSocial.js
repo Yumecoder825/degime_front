@@ -26,7 +26,7 @@ export default function PublicViewSocial({publishData}) {
   };
 
   const handleDownload = (url, filename) => {
-    axios.get(url, {
+    Apis.myGet(url, {
       responseType: 'blob',
     })
     .then((res) => {

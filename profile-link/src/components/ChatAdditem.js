@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { myPut } from '../utilities/config';
+import {Apis} from "../api";
 
 export default function ChatAdditem({url, username, content, isAdd, date, is_online}) {
   const [isActive, setIsActive] = useState(false);
-  const header = {Authorization: `token ${localStorage.getItem('token')}`};
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handlePending = async () => {
     const postUrl = "social/private/contactdata?is_pending=True";
     const body = {member:username};
-    console.log(postUrl, body, header);
-    const data= await myPut(postUrl, body, header);
+    console.log(postUrl, body);
+    const data= await Apis.myPut(postUrl, body);
     data && console.log(data);
     setIsActive(true);
     setIsModalOpen(false);

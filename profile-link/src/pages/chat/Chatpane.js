@@ -4,10 +4,10 @@ import Footer from './Chat/Footer';
 import Header from './Chat/Header';
 
 
-import { myGet } from '../../utilities/config';
 import { toast } from 'react-toastify';
 import SentChat from './Chat/SentChat';
 import ReceivedChat from './Chat/ReceivedChat';
+import {Apis} from "../../api";
 
 
 
@@ -24,8 +24,6 @@ export default function Chatpane() {
   
   const hasMounted = useRef(false);
 
-  
-  const header = {Authorization: `token ${localStorage.getItem('token')}`};
   const [members, setMembers] =useState([]);
   const [messages, setMessages] = useState([]);
   const [toastState, setToastState] = useState(false);
@@ -40,7 +38,7 @@ export default function Chatpane() {
   
   useEffect(()=>{
     async function dispatch(){
-      let newMembers = await myGet(`social/private/chatroom?room_name=${room}`, header);
+      let newMembers = await Apis.myGet(`social/private/chatroom?room_name=${room}`);
       
       if(newMembers[0]){
         const newlyMembers = newMembers[0].member.filter((item)=>item.username !== username);

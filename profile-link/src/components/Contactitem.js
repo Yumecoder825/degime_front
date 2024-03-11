@@ -1,11 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-
-import axios from 'axios';
-import { myConfig } from '../utilities/config';
 import { toast } from 'react-toastify';
 
 import MemoComponent from './Memocomponent';
+import {Apis} from "../api";
 
 export default function Contactitem({url, username, email, is_new, id, onReRender}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,12 +49,9 @@ export default function Contactitem({url, username, email, is_new, id, onReRende
     if(requestState < 4){
       try {
         // console.log("Request: ", requestParam[requestState], username);
-        const response = await axios.put(
-          `${myConfig.apiUrl}/social/private/contactdata`,
-          {"member":username, "block_setting":requestParam[requestState]},
-          {
-            headers:{Authorization:`token ${localStorage.getItem('token')}`}
-          }
+        const response = await Apis.myPut(
+          `social/private/contactdata`,
+          {"member":username, "block_setting":requestParam[requestState]}
         );
         onReRender(true);
         console.log(response.data);

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { TERipple } from 'tw-elements-react';
 import AuthCode from 'react-auth-code-input';
-import axios from 'axios';
-import { myConfig } from '../utilities/config';
 import { toast } from 'react-toastify';
+import {Apis} from "../api";
 
 
 const NumberInputComponent = ({email, isForgotten, isSuccessful}) => {
@@ -13,8 +12,8 @@ const NumberInputComponent = ({email, isForgotten, isSuccessful}) => {
   };
   const handleSubmit = async ()=>{
     try {
-      const response = await axios.post(
-        `${myConfig.apiUrl}/account/${isForgotten ? "validate_code" : "register/validate"}`,
+      const response = await Apis.myPost(
+        `account/${isForgotten ? "validate_code" : "register/validate"}`,
         {email:email, vcode:result}
       );
       toast.success("Successfully verified!");

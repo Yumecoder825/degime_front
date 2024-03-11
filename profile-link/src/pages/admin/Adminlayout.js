@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom'
 import SearchBar from '../../components/SearchBar';
-import {Collapse, List, ListItem, ListItemIcon, ListItemText} from "@mui/material";
+import {Collapse, List} from "@mui/material";
 import {
   AddBusiness, CardGiftcard,
   DescriptionOutlined, Email,
   ExpandLess,
   ExpandMore,
-  Group, ListAlt,
+  Group, Inventory, ListAlt, Settings,
   Store,
   TrendingUpOutlined
 } from "@mui/icons-material";
@@ -31,8 +31,10 @@ const menus = [
       {path: "/admin/orders/canceled", label: "キャンセル一覧"},
     ]
   },
+  { icon: <Inventory/>, path: "/admin/agency", label: "代理店管理"},
   { icon: <TrendingUpOutlined/>, path: "/admin/sales", label: "売上一覧"},
-  { icon: <Email/>, path: "/admin/emails", label: "メール設定"}
+  { icon: <Email/>, path: "/admin/emails", label: "メール設定"},
+  { icon: <Settings/>, path: "/admin/setting", label: "システム設定"}
 ]
 
 export default function Adminlayout() {

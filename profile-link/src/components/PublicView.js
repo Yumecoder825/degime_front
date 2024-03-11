@@ -10,6 +10,7 @@ import fileDownload from 'js-file-download'
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import { convertTextDataToHTML } from '../utilities/config';
+import {Apis} from "../api";
 
 export default function PublicView({publishData}) {
   const images = publishData.idCard && publishData.idCard.idCard;
@@ -27,7 +28,7 @@ export default function PublicView({publishData}) {
   };
 
   const handleDownload = (url, filename) => {
-    axios.get(url, {
+    Apis.myGet(url, {
       responseType: 'blob',
     })
     .then((res) => {

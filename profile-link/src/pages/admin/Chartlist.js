@@ -4,7 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { TEChart } from "tw-elements-react";
 
-import {a11yProps, CustomTabPanel} from './Genealogylist'
+import {a11yProps, CustomTabPanel} from "../../components/TabPanel";
 
 
 function ChartLine({data}) {

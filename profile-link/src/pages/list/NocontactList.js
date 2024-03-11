@@ -4,15 +4,13 @@ import { myConfig } from '../../utilities/config'
 // import { toast } from 'react-toastify'
 
 import Contactitem from '../../components/Contactitem'
+import {Apis} from "../../api";
 export default function NocontactList() {
   const [noContactList, setNoContactList] = useState([]);
   const getDatafromDatabase = async () =>{
     try {
-      const response = await axios.get(
-        `${myConfig.apiUrl}/social/private/contactdata?block_setting=Unannounce`,
-        {
-          headers:{Authorization: `token ${localStorage.getItem('token')}`}, //here I want to pass Bearer Token
-        }
+      const response = await Apis.myGet(
+        `social/private/contactdata?block_setting=Unannounce`,
       );
       // console.log("ShowData: ", response.data[0]);
       // console.log("contactData: ", response.data);
@@ -21,7 +19,7 @@ export default function NocontactList() {
       return response.data;
     } catch (error) {
       // toast.error(error.message);
-      error.response.status === 404 && setNoContactList([]);
+      setNoContactList([]);
       console.error(error.message);
     }
   }

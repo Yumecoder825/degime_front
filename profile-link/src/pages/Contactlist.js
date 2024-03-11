@@ -18,6 +18,7 @@ import {
 
 import PublicView from "../components/PublicView";
 import PublicViewSocial from "../components/PublicViewSocial";
+import {Apis} from "../api";
 
 export default function ContactList() {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
@@ -82,14 +83,8 @@ export default function ContactList() {
   // Update folders
   const updatingFolders = async () => {
     try {
-      const response = await axios.get(
-        `${myConfig.apiUrl}/social/private/contactgroup`,
-        {
-          headers:
-            {
-              Authorization:`token ${localStorage.getItem('token')}`
-            }
-        }
+      const response = await Apis.myGet(
+        `social/private/contactgroup`
       );
       const updatedFolder = [...navTab];
       console.log("Response folders", response.data[0].group_Name, updatedFolder);
@@ -108,12 +103,9 @@ export default function ContactList() {
     const folders = [...navTab];
     if(folderName.type === "create"){
       try {
-        const response = await axios.put(
-          `${myConfig.apiUrl}/social/private/contactgroup`,
+        const response = await Apis.myPut(
+          `social/private/contactgroup`,
           {group_Name:folderName.content},
-          {headers:{
-            Authorization:`token ${localStorage.getItem('token')}`
-          }}
         );
         console.log(response.data);
         folders.push({title:folderName.content, id:folders.length});
@@ -125,12 +117,9 @@ export default function ContactList() {
     }
     else if(folderName.type === "modify"){
       try {
-        const response = await axios.put(
-          `${myConfig.apiUrl}/social/private/contactgroup?old_group=${folders[isActive].title}`,
+        const response = await Apis.myPut(
+          `social/private/contactgroup?old_group=${folders[isActive].title}`,
           {group_Name:folderName.content},
-          {headers:{
-            Authorization:`token ${localStorage.getItem('token')}`
-          }}
         );
         console.log(response.data);
         folders[isActive].title = folderName.content;
@@ -143,11 +132,8 @@ export default function ContactList() {
       if(folders[isActive].title === "Business" || folders[isActive].title === "Private") toast.error("This folder is default, you can't delete.");
       else {
         try {
-          const response = await axios.delete(
-            `${myConfig.apiUrl}/social/private/contactgroup?group_Name=${folders[isActive].title}`,
-            {headers:{
-              Authorization:`token ${localStorage.getItem('token')}`
-            }}
+          const response = await Apis.myDelete(
+            `social/private/contactgroup?group_Name=${folders[isActive].title}`,
           );
           console.log(response.data);
           const updatedData = folders.filter((element) => folders.indexOf(element) !== isActive);
@@ -162,8 +148,8 @@ export default function ContactList() {
 
   const getDatafromDatabase = async (groupName) =>{
     try {
-      const response = await axios.get(
-        `${myConfig.apiUrl}/social/private/contactdata?group_Name=${groupName}`,
+      const response = await Apis.myGet(
+        `social/private/contactdata?group_Name=${groupName}`,
         {
           headers:{Authorization: `token ${localStorage.getItem('token')}`}, //here I want to pass Bearer Token
         }

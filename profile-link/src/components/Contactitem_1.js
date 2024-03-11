@@ -7,6 +7,7 @@ import axios from 'axios';
 import { myConfig } from '../utilities/config';
 import { toast } from 'react-toastify';
 import { TERipple } from 'tw-elements-react';
+import {Apis} from "../api";
 
 export default function Contactitem({url, navTab, username, email, is_new, id, onReRender, previewProfile}) {
   const navigate = useNavigate();
@@ -38,14 +39,9 @@ export default function Contactitem({url, navTab, username, email, is_new, id, o
   const handleMove = async (title) => {
     try{
       setIsMoveOpen(false);
-      const response = await axios.put(
-        `${myConfig.apiUrl}/social/private/contactdata`,
+      const response = await Apis.myPut(
+        `social/private/contactdata`,
         {"member":username, "group_Name":title},
-        {
-          headers: {
-            Authorization: `token ${localStorage.getItem('token')}`
-          }
-        }
       )
       onReRender(true);
       console.log(response.data);
@@ -67,8 +63,8 @@ export default function Contactitem({url, navTab, username, email, is_new, id, o
     if(requestState < 5 && requestState > 1){
       try {
         // console.log("Request: ", requestParam[requestState], username);
-        const response = await axios.put(
-          `${myConfig.apiUrl}/social/private/contactdata`,
+        const response = await Apis.myPut(
+          `social/private/contactdata`,
           {"member":username, "block_setting":requestParam[requestState]},
           {
             headers:{Authorization:`token ${localStorage.getItem('token')}`}
@@ -84,12 +80,9 @@ export default function Contactitem({url, navTab, username, email, is_new, id, o
     else if(requestState === 0){
       try {
         // console.log("Request: ", requestParam[requestState], username);
-        const response = await axios.put(
-          `${myConfig.apiUrl}/social/private/contactdata`,
-          {"member":username, "is_pending":"addChat"},
-          {
-            headers:{Authorization:`token ${localStorage.getItem('token')}`}
-          }
+        const response = await Apis.myPut(
+          `social/private/contactdata`,
+          {"member":username, "is_pending":"addChat"}
         );
         toast.success(`${username}さんにチャートを申請しました。`);
         navigate("/chat/add");
@@ -102,8 +95,8 @@ export default function Contactitem({url, navTab, username, email, is_new, id, o
     else if(requestState === 1){
       if(!id) {
         try {
-          const response = await axios.get(
-            `${myConfig.apiUrl}/social/public/snstree?username=${username}`
+          const response = await Apis.myGet(
+            `social/public/snstree?username=${username}`
           );
           // console.log("ShowData: ", response.data[0]);
           previewProfile(response.data[0]);
@@ -116,8 +109,8 @@ export default function Contactitem({url, navTab, username, email, is_new, id, o
       }
       else {
         try {
-          const response = await axios.get(
-            `${myConfig.apiUrl}/social/public/online?username=${username}`
+          const response = await Apis.myGet(
+            `social/public/online?username=${username}`
           );
           // console.log("ShowData: ", response.data[0]);
           previewProfile(response.data[0]);

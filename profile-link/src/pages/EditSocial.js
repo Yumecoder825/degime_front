@@ -39,7 +39,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { ChromePicker } from 'react-color';  // Import ChromePicker from react-color
+import { ChromePicker } from 'react-color';
+import {Apis} from "../api";  // Import ChromePicker from react-color
 
 const EditSocial = ({profileButton}) => {
 	const [profileData, setProfileData] = useState([]);
@@ -368,11 +369,9 @@ const EditSocial = ({profileButton}) => {
     console.log(completepublishData);
 
     try {
-      const response = await axios.put(
-        `${myConfig.apiUrl}/social/private/snstree`,
-        completepublishData,{
-          headers:{Authorization: `token ${localStorage.getItem('token')}`}, //here I want to pass Bearer Token
-        }
+      const response = await Apis.myPut(
+        `social/private/snstree`,
+        completepublishData
       );
       toast.success("Successfully published!");
       console.log("Response:------", response.data);

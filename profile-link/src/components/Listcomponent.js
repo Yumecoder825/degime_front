@@ -8,6 +8,7 @@ import 'react-pdf/dist/Page/TextLayer.css';
 
 import axios from 'axios'
 import fileDownload from 'js-file-download'
+import {Apis} from "../api";
 
 export default function Listcomponent({index, moveItem, profileListData, id, isDelete}) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -36,7 +37,7 @@ export default function Listcomponent({index, moveItem, profileListData, id, isD
   });
 
   const handleDownload = (url, filename) => {
-    axios.get(url, {
+    Apis.myGet(url, {
       responseType: 'blob',
     })
     .then((res) => {
