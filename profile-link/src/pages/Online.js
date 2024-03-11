@@ -11,7 +11,7 @@ const Online = () => {
           <div className="w-[130px] mt-3 mx-auto bg-purple-500 h-[2px]"></div>
         </div>
         <div className=" w-1/2">
-          <Link to="/social">SNSリンクツリー</Link>
+          <Link to="/editsocial">SNSリンクツリー</Link>
         </div>
       </div>
       <div className="min-w-[320px] w-[50%] aspect-[4/3] rounded-xl border-2 border-indigo-700 bg-white mt-10 mx-auto relative">

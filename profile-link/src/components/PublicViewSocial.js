@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 import ReactPlayer from 'react-player';
 import { Document, Page } from 'react-pdf';
 
-import axios from 'axios'
 import fileDownload from 'js-file-download'
 
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
+import {Apis} from "../api";
 
 export default function PublicViewSocial({publishData}) {
   const images = publishData.idCard && publishData.idCard.idCard;
@@ -107,13 +107,13 @@ export default function PublicViewSocial({publishData}) {
                 strokeWidth="0.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-              >              
+              >
                 <line x1="12" y1="10" x2="12" y2="14" />
                 <line x1="10" y1="12" x2="14" y2="12" />
               </svg>
             )}
           </div>
-          <div className='border rounded-lg p-3 my-4 text-lg w-[70%]'>{publishData.accountName}</div> 
+          <div className='border rounded-lg p-3 my-4 text-lg w-[70%]'>{publishData.accountName}</div>
           <div className='border rounded-lg p-3 text-lg w-[70%]'>{publishData.profile}</div>
 				</div>
 
@@ -124,8 +124,8 @@ export default function PublicViewSocial({publishData}) {
                 item.type==="imgLink1" && (
                   <div>
                     <div className="relative w-full aspect-[16/9] rounded-lg border-black border-2 overflow-hidden mx-auto" style={{backgroundImage:`url(${item.url})`,backgroundSize:"cover"}}></div>
-                    <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title}</div> 
-                    <div className='w-full text-sm text-center px-3'>{item.text}</div> 
+                    <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title}</div>
+                    <div className='w-full text-sm text-center px-3'>{item.text}</div>
                   </div>
                 )
               }
@@ -134,13 +134,13 @@ export default function PublicViewSocial({publishData}) {
                   <div className="flex gap-2 justify-between">
                     <div className='w-full'>
                       <div className="w-full aspect-[16/9] rounded-lg border-black border-2 overflow-hidden mx-auto" style={{backgroundImage:`url(${item.url1})`,backgroundSize:"cover"}}></div>
-                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title1}</div> 
-                      <div className='w-full text-sm text-center px-3'>{item.text1}</div> 
+                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title1}</div>
+                      <div className='w-full text-sm text-center px-3'>{item.text1}</div>
                     </div>
                     <div className='w-full'>
                       <div className="w-full aspect-[16/9] rounded-lg border-black border-2 overflow-hidden mx-auto" style={{backgroundImage:`url(${item.url2})`,backgroundSize:"cover"}}></div>
-                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title2}</div> 
-                      <div className='w-full text-sm text-center px-3'>{item.text2}</div> 
+                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title2}</div>
+                      <div className='w-full text-sm text-center px-3'>{item.text2}</div>
                     </div>
                   </div>
                 )
@@ -150,18 +150,18 @@ export default function PublicViewSocial({publishData}) {
                   <div className="flex gap-2 justify-between">
                     <div className='w-full'>
                       <div className="w-full aspect-[1/1] rounded-lg border-black border-2 overflow-hidden mx-auto" style={{backgroundImage:`url(${item.url1})`,backgroundSize:"cover"}}></div>
-                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title1}</div> 
-                      <div className='w-full text-sm text-center px-3'>{item.text1}</div> 
+                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title1}</div>
+                      <div className='w-full text-sm text-center px-3'>{item.text1}</div>
                     </div>
                     <div className='w-full'>
                       <div className="w-full aspect-[1/1] rounded-lg border-black border-2 overflow-hidden mx-auto" style={{backgroundImage:`url(${item.url2})`,backgroundSize:"cover"}}></div>
-                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title2}</div> 
-                      <div className='w-full text-sm text-center px-3'>{item.text2}</div> 
+                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title2}</div>
+                      <div className='w-full text-sm text-center px-3'>{item.text2}</div>
                     </div>
                     <div className='w-full'>
                       <div className="w-full aspect-[1/1] rounded-lg border-black border-2 overflow-hidden mx-auto" style={{backgroundImage:`url(${item.url3})`,backgroundSize:"cover"}}></div>
-                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title3}</div> 
-                      <div className='w-full text-sm text-center px-3'>{item.text3}</div> 
+                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title3}</div>
+                      <div className='w-full text-sm text-center px-3'>{item.text3}</div>
                     </div>
                   </div>
                 )
@@ -171,23 +171,23 @@ export default function PublicViewSocial({publishData}) {
                   <div className="flex gap-2 justify-between">
                     <div className='w-full'>
                       <div className="w-full aspect-[1/1] rounded-lg border-black border-2 overflow-hidden mx-auto" style={{backgroundImage:`url(${item.url1})`,backgroundSize:"cover"}}></div>
-                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title1}</div> 
-                      <div className='w-full text-sm text-center px-3'>{item.text1}</div> 
+                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title1}</div>
+                      <div className='w-full text-sm text-center px-3'>{item.text1}</div>
                     </div>
                     <div className='w-full'>
                       <div className="w-full aspect-[1/1] rounded-lg border-black border-2 overflow-hidden mx-auto" style={{backgroundImage:`url(${item.url2})`,backgroundSize:"cover"}}></div>
-                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title2}</div> 
-                      <div className='w-full text-sm text-center px-3'>{item.text2}</div> 
+                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title2}</div>
+                      <div className='w-full text-sm text-center px-3'>{item.text2}</div>
                     </div>
                     <div className='w-full'>
                       <div className="w-full aspect-[1/1] rounded-lg border-black border-2 overflow-hidden mx-auto" style={{backgroundImage:`url(${item.url3})`,backgroundSize:"cover"}}></div>
-                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title3}</div> 
-                      <div className='w-full text-sm text-center px-3'>{item.text3}</div> 
+                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title3}</div>
+                      <div className='w-full text-sm text-center px-3'>{item.text3}</div>
                     </div>
                     <div className='w-full'>
                       <div className="w-full aspect-[1/1] rounded-lg border-black border-2 overflow-hidden mx-auto" style={{backgroundImage:`url(${item.url4})`,backgroundSize:"cover"}}></div>
-                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title4}</div> 
-                      <div className='w-full text-sm text-center px-3'>{item.text4}</div> 
+                      <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title4}</div>
+                      <div className='w-full text-sm text-center px-3'>{item.text4}</div>
                     </div>
                   </div>
                 )
@@ -243,8 +243,8 @@ export default function PublicViewSocial({publishData}) {
                         ))}
                       </Document>
                     </div>
-                    <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title}</div> 
-                    <div className='w-full text-sm text-center px-3'>{item.text}</div> 
+                    <div className='w-full text-2xl font-bold text-center px-3 ' >{item.title}</div>
+                    <div className='w-full text-sm text-center px-3'>{item.text}</div>
                     <button className="downloadButton p-3 px-5 mt-3 rounded-full text-white/90 flex drop-shadow-lg font-bold" onClick={()=>handleDownload(item.url, item.title || "document")}>ダウンロード<img className='shrink-0' alt="download" src="/image/ダウンロード.png" width="25"/></button>
                   </div>
                 )
@@ -272,7 +272,7 @@ export default function PublicViewSocial({publishData}) {
         {/* <DraggableList onChangeData={handleDraggableList} />
 
         <DndProvider backend={HTML5Backend}>
-          { 
+          {
             profileData && profileData.map((item, index) =>(
               <Listcomponent key = {index} id = {index} index={index} item={item} moveItem={moveItem} isDelete = {deleteProfileData} />
             ))

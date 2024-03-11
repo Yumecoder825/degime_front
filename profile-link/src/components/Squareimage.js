@@ -61,11 +61,12 @@ const ImageSlider = ({ onChangeData }) => {
     <div className="squareUploader min-w-[335px] w-full h-full mx-auto mb-3">
       <div
         className="relative min-w-[335px] w-full aspect-[4/3] rounded-lg border-indigo-700 border-2 overflow-hidden mx-auto"
-        style={{
-          backgroundImage: `url(${lastImage})`,
-          backgroundSize: "cover",
-        }}
       >
+        <img
+            src={lastImage}
+            className="w-full h-full object-contain"
+            alt=""
+        />
         <input
           type="file"
           accept="image/*"
