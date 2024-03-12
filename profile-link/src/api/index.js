@@ -1,8 +1,8 @@
 import axios from "axios";
 import {getAccessToken} from "../auth";
 
-// export const myConfig = { apiUrl: 'https://ik1-129-71227.vs.sakura.ne.jp/api' };
-export const myConfig = { apiUrl: 'http://localhost:8000/api' };
+export const myConfig = { apiUrl: 'https://ik1-129-71227.vs.sakura.ne.jp/api' };
+// export const myConfig = { apiUrl: 'http://localhost:8000/api' };
 
 export class Apis {
     static setAuthToken(token) {
