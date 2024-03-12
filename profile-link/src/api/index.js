@@ -86,5 +86,6 @@ export class Apis {
 const accessToken = getAccessToken();
 if (accessToken) {
     // axios set bearer token
+    // commit test
     Apis.setAuthToken(accessToken);
 }
