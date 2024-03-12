@@ -2,13 +2,17 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-function TextEditor({isClear, onChangeData}) {
-  const [editorContent, setEditorContent] = useState('');
+function TextEditor({isClear, onChangeData, content = ""}) {
+  const [editorContent, setEditorContent] = useState(content);
   const quillRef = useRef(null);
 
   useEffect(()=>{
     isClear && setEditorContent('');
   }, [isClear]);
+
+  useEffect(()=>{
+    setEditorContent(content);
+  }, [content]);
 
   const handleEditorChange = (content) => {
     setEditorContent(content);
@@ -28,10 +32,11 @@ function TextEditor({isClear, onChangeData}) {
     ]
   };
 
+  console.log(editorContent);
+
   return (
     <div>
       <ReactQuill value={editorContent} onChange={(e)=>{handleEditorChange(e)}} modules={modules} ref={quillRef} />
-      {console.log("Editor: ", editorContent)}
       <DisplayComponent editedData={editorContent} />
     </div>
   );

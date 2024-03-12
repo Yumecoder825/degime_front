@@ -333,7 +333,7 @@ const Dashboard = (props) => {
                             </svg>
                         </div>
                     </Link>
-                    <Link className="snsPattern button mainButtonMargin" to="/social">
+                    <Link className="snsPattern button mainButtonMargin" to="/editsocial">
                         <div className="space"></div>
                         <div className="buttonName">SNS向けリンクツリー</div>
                         <div className="plusIcon">

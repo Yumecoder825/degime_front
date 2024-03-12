@@ -4,6 +4,10 @@ import {useState} from "react";
 import {ChromePicker} from "react-color";
 import TextEditor from "../../../components/Textedit";
 import {Close} from "@mui/icons-material";
+import {Apis} from "../../../api";
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
+import {FileUpload} from "../../../utilities/upload";
 
 // id,
 // code,
@@ -18,13 +22,80 @@ import {Close} from "@mui/icons-material";
 // createdAt,
 // updatedAt
 export default function NewProduct() {
-    const [product, setProduct] = useState({});
+    const navigate = useNavigate();
     const [logoColor, setLogoColor] = useState("white");
     const [isPublic, setIsPublic] = useState(true);
     const [code, setCode] = useState("");
     const [name, setName] = useState("");
     const [images, setImages] = useState([]);
     const [backImages, setBackImages] = useState([]);
+    const [priceWithoutFee, setPriceWithoutFee] = useState(0);
+    const [fee, setFee] = useState(0);
+    const [description, setDescription] = useState("");
+    const [stock, setStock] = useState(0);
+
+    const onGenerateProductCode = () => {
+        setCode("A" + Math.floor(Math.random() * 1000000000));
+    }
+
+    const handleImageUpload = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const upload_url = await FileUpload(file);
+            setImages([...images, upload_url]);
+        }
+    };
+
+    const handleBackImageUpload = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const upload_url = await FileUpload(file);
+            setBackImages([...backImages, upload_url]);
+        }
+    };
+
+    const onRegisterProduct = async () => {
+        if(!name) {
+            return toast.error(`Please fill product name!`);
+        }
+
+        if(!code) {
+            return toast.error(`Please fill product code!`);
+        }
+
+        if(!images.length) {
+            return toast.error(`Please fill product images!`);
+        }
+
+        if(!priceWithoutFee) {
+            return toast.error(`Please fill product price!`);
+        }
+
+        const payload = {
+            code,
+            title: name,
+            image_urls: images,
+            back_image_urls: backImages,
+            price_without_fee: priceWithoutFee,
+            price: priceWithoutFee + fee,
+            stock,
+            description,
+            is_public: isPublic,
+            logo_color: logoColor,
+        }
+
+        const res = await Apis.myPost("shop/product", payload);
+        if (res && res.success) {
+            toast.success(`Product is successfully registered!`);
+            navigate('/admin/products');
+            return;
+        }
+        if (res && res.data.error) {
+            toast.error(res.data.error);
+        } else {
+            toast.error(`Failed! Please try again!`);
+        }
+    }
 
     return (
         <div className='py-2 px-10'>
@@ -35,7 +106,7 @@ export default function NewProduct() {
                     <div className="col-span-3 text-right"><label htmlFor="product-code" className='text-md pt-2'>商品コード<span className="text-red-500 px-1">*</span></label></div>
                     <div className="col-span-6">
                         <input type="text" className='p-1 text-lg border rounded-md' name="product-code" value={code} onChange={(event) => setCode(event.target.value)} />
-                        <button className="bg-gray-200 border-[1px] border-gray-300 rounded-md text-sm px-2 py-1 ml-4">自動採番</button>
+                        <button className="bg-gray-200 border-[1px] border-gray-300 rounded-md text-sm px-2 py-1 ml-4" onClick={() => onGenerateProductCode()}>自動採番</button>
                         <small className="ml-4">※登録後の変更不可</small>
                     </div>
                 </div>
@@ -54,17 +125,9 @@ export default function NewProduct() {
                 <div className="grid grid-cols-12 gap-2 mt-4">
                     <div className="col-span-3 text-right"><label htmlFor="product-image" className='text-md pt-2'>オリジナル画像(表)<span className="text-red-500 px-1">*</span></label></div>
                     <div className="col-span-6">
-                        <input type="file" accept="image/jpeg,image/png" className='w-full p-1 text-lg border rounded-md' name="product-image" onChange={(event) => {
-                            if (event.target.files.length) {
-                                const fr = new FileReader();
-                                fr.onload = function () {
-                                    setImages([...images, fr.result]);
-                                }
-                                fr.readAsDataURL(event.target.files[0]);
-                            }
-                        }} />
+                        <input type="file" accept="image/jpeg,image/png" className='w-full p-1 text-lg border rounded-md' name="product-image" onChange={handleImageUpload} />
                         {
-                            images.map((img, index) => <div className="relative w-[px] mt-2">
+                            images.map((img, index) => <div key={index} className="relative w-[px] mt-2">
                                 <img src={img} alt=""/>
                                 <Close className="absolute -right-8 top-0 cursor-pointer" onClick={() => setImages(images.slice(0, index).concat(images.slice(index + 1)))}/>
                             </div>)
@@ -77,17 +140,9 @@ export default function NewProduct() {
                 <div className="grid grid-cols-12 gap-4 mt-4">
                     <div className="col-span-3 text-right"><label htmlFor="product-image-back" className='text-md pt-2'>オリジナル画像(裏)</label></div>
                     <div className="col-span-6">
-                        <input type="file" accept="image/jpeg,image/png" className='w-full p-1 text-lg border rounded-md' name="product-image-back" onChange={(event) => {
-                            if (event.target.files.length) {
-                                const fr = new FileReader();
-                                fr.onload = function () {
-                                    setBackImages([...backImages, fr.result]);
-                                }
-                                fr.readAsDataURL(event.target.files[0]);
-                            }
-                        }} />
+                        <input type="file" accept="image/jpeg,image/png" className='w-full p-1 text-lg border rounded-md' name="product-image-back" onChange={handleBackImageUpload} />
                         {
-                            backImages.map((img, index) => <div className="relative w-[px] mt-2">
+                            backImages.map((img, index) => <div key={index} className="relative w-[px] mt-2">
                                 <img src={img} alt=""/>
                                 <Close className="absolute -right-8 top-0 cursor-pointer" onClick={() => setBackImages(backImages.slice(0, index).concat(backImages.slice(index + 1)))}/>
                             </div>)
@@ -142,9 +197,9 @@ export default function NewProduct() {
                 <div className="grid grid-cols-12 gap-2 mt-4">
                     <div className="col-span-3 text-right"><label htmlFor="product-price" className='text-md pt-2'>販売価格<span className="text-red-500 px-1">*</span></label></div>
                     <div className="col-span-9 flex items-center">
-                        <small>本体価格：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price" />
-                        <small className="pl-2">＋ 消費税額：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price" />
-                        <small className="pl-2">＝ 税込価格：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price" /><small className="pl-1">円</small>
+                        <small>本体価格：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price" value={priceWithoutFee} onChange={(e) => setPriceWithoutFee(Number(e.target.value))} />
+                        <small className="pl-2">＋ 消費税額：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price-fee" value={fee} onChange={(e) => setFee(Number(e.target.value))} />
+                        <small className="pl-2">＝ 税込価格：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price-total" value={priceWithoutFee + fee} /><small className="pl-1">円</small>
                     </div>
                 </div>
 
@@ -153,7 +208,7 @@ export default function NewProduct() {
                 <div className="grid grid-cols-12 gap-4 mt-4">
                     <div className="col-span-3 text-right"><label htmlFor="product-description" className='text-md pt-2'>商品説明文</label></div>
                     <div className="col-span-6">
-                        <TextEditor isClear={false} onChangeData={(text) => {}} />
+                        <TextEditor isClear={false} onChangeData={(text) => setDescription(text.data)} />
                     </div>
                 </div>
 
@@ -162,7 +217,7 @@ export default function NewProduct() {
                 <div className="grid grid-cols-12 gap-4 mt-4">
                     <div className="col-span-3 text-right"><label htmlFor="stock" className='text-md pt-2'>在庫</label></div>
                     <div className="col-span-6">
-                        <input type="number" className='p-1 text-lg border rounded-md' name="stock" />
+                        <input type="number" className='p-1 text-lg border rounded-md' name="stock" value={stock} onChange={(e) => setStock(Number(e.target.value))} />
                     </div>
                 </div>
 
@@ -171,7 +226,7 @@ export default function NewProduct() {
                 <div className='grid grid-cols-12 gap-4 mt-4 mb-8'>
                     <div className="col-span-6"></div>
                     <div className="col-span-3 text-right">
-                        <button className='ml-auto block w-[150px] text-center p-2 mt-3 rounded-md bg-slate-300 hover:bg-slate-400 active:bg-slate-500 cursor-pointer'>登録する</button>
+                        <button className='ml-auto block w-[150px] text-center p-2 mt-3 rounded-md bg-slate-300 hover:bg-slate-400 active:bg-slate-500 cursor-pointer' onClick={onRegisterProduct}>登録する</button>
                     </div>
                 </div>
             </div>

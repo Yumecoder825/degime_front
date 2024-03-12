@@ -1,29 +1,10 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import {FileUpload} from "../utilities/upload";
 
 const AvatarUploader = ({onChangeData}) => {
   const [selectedImage, setSelectedImage] = useState(null);
 
-  //Cloudinary upload
-  const FileUpload = async (file) => {
-    const cloud_name = "dz6r3o4w0";
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "dfuqz9xv");
-    formData.append('cloud_name', cloud_name);
-
-    try {
-      const res = await fetch('https://api.cloudinary.com/v1_1/dz6r3o4w0/auto/upload', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await res.json();
-      return data.secure_url;
-    } catch (err) {
-      toast.error(err.message);
-      console.log(err)
-    }
-  }
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -56,7 +37,7 @@ const AvatarUploader = ({onChangeData}) => {
               strokeWidth="0.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-            >              
+            >
               <line x1="12" y1="10" x2="12" y2="14" />
               <line x1="10" y1="12" x2="14" y2="12" />
             </svg>

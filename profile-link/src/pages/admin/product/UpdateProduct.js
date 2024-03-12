@@ -1,9 +1,12 @@
 import * as React from 'react';
 import {FormControlLabel, Radio, RadioGroup} from "@mui/material";
 import {useEffect, useState} from "react";
-import {ChromePicker} from "react-color";
 import TextEditor from "../../../components/Textedit";
 import {Close} from "@mui/icons-material";
+import {Apis} from "../../../api";
+import {toast} from "react-toastify";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import {FileUpload} from "../../../utilities/upload";
 
 // id,
 // code,
@@ -18,31 +21,114 @@ import {Close} from "@mui/icons-material";
 // createdAt,
 // updatedAt
 export default function UpdateProduct() {
-    const [product, setProduct] = useState({});
+    const [params] = useSearchParams();
+    const navigate = useNavigate();
+
+    const [loading, setLoading] = useState(true);
     const [logoColor, setLogoColor] = useState("white");
     const [isPublic, setIsPublic] = useState(true);
     const [code, setCode] = useState("");
     const [name, setName] = useState("");
     const [imageUrls, setImageUrls] = useState([]);
-    const [images, setImages] = useState([]);
     const [backImageUrls, setBackImageUrls] = useState([]);
-    const [backImages, setBackImages] = useState([]);
     const [description, setDescription] = useState("");
     const [stock, setStock] = useState(0);
+    const [priceWithoutFee, setPriceWithoutFee] = useState(0);
+    const [fee, setFee] = useState(0);
 
     useEffect(() => {
         // TODO load product from product id
-
-        setLogoColor("blue");
-        setIsPublic(true);
-        setCode("A000000001");
-        setName("degimeカード");
-        setImageUrls(["https://www23.easy-myshop.jp/emsrsc/degime/itemimg/1/list.item.1.1.jpg"]);
-        setBackImageUrls(["https://www23.easy-myshop.jp/emsrsc/degime/itemimg/1/list.item.1.1.jpg"]);
-        setDescription("<p>デスと</p>")
-        setStock(10);
-
+        const product_id = params.get('id');
+        if (product_id) {
+            loadProduct(product_id).then();
+        } else {
+            toast.error("Invalid product url");
+            navigate("/admin/products");
+        }
     }, []);
+
+    const loadProduct = async (id) => {
+        setLoading(true);
+        const res = await Apis.myGet(`shop/product?id=${id}`);
+        if (res && res.success) {
+            const product = res.data;
+            setLogoColor(product.logo_color);
+            setIsPublic(product.is_public);
+            setCode(product.code);
+            setName(product.title);
+            setImageUrls(product.image_urls);
+            setBackImageUrls(product.back_image_urls);
+            setDescription(product.description)
+            setStock(product.stock);
+            setPriceWithoutFee(product.price_without_fee);
+            setFee(product.price - product.price_without_fee);
+        } else {
+            toast.error("Invalid product");
+            navigate("/admin/products");
+        }
+        setLoading(false)
+    }
+
+    const handleUpdateProduct = async () => {
+        if(!name) {
+            return toast.error(`Please fill product name!`);
+        }
+
+        if(!code) {
+            return toast.error(`Please fill product code!`);
+        }
+
+        if(!imageUrls.length) {
+            return toast.error(`Please fill product images!`);
+        }
+
+        if(!priceWithoutFee) {
+            return toast.error(`Please fill product price!`);
+        }
+
+        const payload = {
+            id: Number(params.get('id')),
+            code,
+            title: name,
+            image_urls: imageUrls,
+            back_image_urls: backImageUrls,
+            price_without_fee: priceWithoutFee,
+            price: priceWithoutFee + fee,
+            stock,
+            description,
+            is_public: isPublic,
+            logo_color: logoColor,
+        }
+
+        const res = await Apis.myPut("shop/product", payload);
+        if (res && res.success) {
+            toast.success(`Product is successfully updated!`);
+            navigate('/admin/products');
+            return;
+        }
+        if (res && res.data.error) {
+            toast.error(res.data.error);
+        } else {
+            toast.error(`Failed! Please try again!`);
+        }
+    }
+
+
+    const handleImageUpload = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const upload_url = await FileUpload(file);
+            setImageUrls([...imageUrls, upload_url]);
+        }
+    };
+
+    const handleBackImageUpload = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const upload_url = await FileUpload(file);
+            setBackImageUrls([...backImageUrls, upload_url]);
+        }
+    };
 
     return (
         <div className='py-2 px-10'>
@@ -72,25 +158,11 @@ export default function UpdateProduct() {
                 <div className="grid grid-cols-12 gap-2 mt-4">
                     <div className="col-span-3 text-right"><label htmlFor="product-image" className='text-md pt-2'>オリジナル画像(表)<span className="text-red-500 px-1">*</span></label></div>
                     <div className="col-span-6">
-                        <input type="file" accept="image/jpeg,image/png" className='w-full p-1 text-lg border rounded-md' name="product-image" onChange={(event) => {
-                            if (event.target.files.length) {
-                                const fr = new FileReader();
-                                fr.onload = function () {
-                                    setImages([...images, fr.result]);
-                                }
-                                fr.readAsDataURL(event.target.files[0]);
-                            }
-                        }} />
+                        <input type="file" accept="image/jpeg,image/png" className='w-full p-1 text-lg border rounded-md' name="product-image" onChange={handleImageUpload} />
                         {
-                            imageUrls.map((img, index) => <div className="relative w-[px] mt-2">
+                            imageUrls.map((img, index) => <div key={index} className="relative w-[px] mt-2">
                                 <img src={img} alt=""/>
                                 <Close className="absolute -right-8 top-0 cursor-pointer" onClick={() => setImageUrls(imageUrls.slice(0, index).concat(imageUrls.slice(index + 1)))}/>
-                            </div>)
-                        }
-                        {
-                            images.map((img, index) => <div className="relative w-[px] mt-2">
-                                <img src={img} alt=""/>
-                                <Close className="absolute -right-8 top-0 cursor-pointer" onClick={() => setImages(images.slice(0, index).concat(images.slice(index + 1)))}/>
                             </div>)
                         }
                     </div>
@@ -101,25 +173,11 @@ export default function UpdateProduct() {
                 <div className="grid grid-cols-12 gap-4 mt-4">
                     <div className="col-span-3 text-right"><label htmlFor="product-image-back" className='text-md pt-2'>オリジナル画像(裏)</label></div>
                     <div className="col-span-6">
-                        <input type="file" accept="image/jpeg,image/png" className='w-full p-1 text-lg border rounded-md' name="product-image-back" onChange={(event) => {
-                            if (event.target.files.length) {
-                                const fr = new FileReader();
-                                fr.onload = function () {
-                                    setBackImages([...backImages, fr.result]);
-                                }
-                                fr.readAsDataURL(event.target.files[0]);
-                            }
-                        }} />
+                        <input type="file" accept="image/jpeg,image/png" className='w-full p-1 text-lg border rounded-md' name="product-image-back" onChange={handleBackImageUpload} />
                         {
-                            backImageUrls.map((img, index) => <div className="relative w-[px] mt-2">
+                            backImageUrls.map((img, index) => <div key={index} className="relative w-[px] mt-2">
                                 <img src={img} alt=""/>
                                 <Close className="absolute -right-8 top-0 cursor-pointer" onClick={() => setBackImageUrls(backImageUrls.slice(0, index).concat(backImageUrls.slice(index + 1)))}/>
-                            </div>)
-                        }
-                        {
-                            backImages.map((img, index) => <div className="relative w-[px] mt-2">
-                                <img src={img} alt=""/>
-                                <Close className="absolute -right-8 top-0 cursor-pointer" onClick={() => setBackImages(backImages.slice(0, index).concat(backImages.slice(index + 1)))}/>
                             </div>)
                         }
                     </div>
@@ -130,17 +188,23 @@ export default function UpdateProduct() {
                 <div className="grid grid-cols-12 gap-4 mt-4">
                     <div className="col-span-3 text-right"><label htmlFor="product-logo-color" className='text-md pt-2'>ロゴマークの色</label></div>
                     <div className="col-span-6">
-                        <RadioGroup
-                            aria-labelledby="logo-color-group-label"
-                            name="is-public"
-                            value={logoColor}
-                            onChange={(event, value) => setLogoColor(value)}
-                            >
-                            <FormControlLabel value="white" control={<Radio />} label="白色" />
-                            <FormControlLabel value="black" control={<Radio />} label="黒色" />
-                            <FormControlLabel value="blue" control={<Radio />} label="青色" />
-                        </RadioGroup>
-                        <div style={{backgroundColor: logoColor}} className="w-[120px] h-[40px] mt-2"></div>
+                        <div className="flex justify-start">
+                            <div className="flex flex-col justify-center text-center" onClick={() => setLogoColor("white")}>
+                                <img src="/image/logo1-white.png" style={{ height: "160px" }} alt=""/>
+                                <span>白</span>
+                                <label><Radio name="is-public" value="white" checked={logoColor === "white"} /></label>
+                            </div>
+                            <div className="flex flex-col justify-center text-center" onClick={() => setLogoColor("black")}>
+                                <img src="/image/logo1-black.png" style={{ height: "160px" }} alt=""/>
+                                <span>黒</span>
+                                <label><Radio name="is-public" value="black" checked={logoColor === "black"} /></label>
+                            </div>
+                            <div className="flex flex-col justify-center text-center" onClick={() => setLogoColor("blue")}>
+                                <img src="/image/logo1-blue.png" style={{ height: "160px" }} alt=""/>
+                                <span>青</span>
+                                <label><Radio name="is-public" value="blue" checked={logoColor === "blue"} /></label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -166,9 +230,9 @@ export default function UpdateProduct() {
                 <div className="grid grid-cols-12 gap-2 mt-4">
                     <div className="col-span-3 text-right"><label htmlFor="product-price" className='text-md pt-2'>販売価格<span className="text-red-500 px-1">*</span></label></div>
                     <div className="col-span-9 flex items-center">
-                        <small>本体価格：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price" />
-                        <small className="pl-2">＋ 消費税額：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price" />
-                        <small className="pl-2">＝ 税込価格：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price" /><small className="pl-1">円</small>
+                        <small>本体価格：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price" value={priceWithoutFee} onChange={(e) => setPriceWithoutFee(Number(e.target.value))}  />
+                        <small className="pl-2">＋ 消費税額：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price" value={fee} onChange={(e) => setFee(Number(e.target.value))} />
+                        <small className="pl-2">＝ 税込価格：</small><input type="number" className='w-[120px] p-1 text-lg border rounded-md' name="product-price" value={priceWithoutFee + fee} /><small className="pl-1">円</small>
                     </div>
                 </div>
 
@@ -177,7 +241,7 @@ export default function UpdateProduct() {
                 <div className="grid grid-cols-12 gap-4 mt-4">
                     <div className="col-span-3 text-right"><label htmlFor="product-description" className='text-md pt-2'>商品説明文</label></div>
                     <div className="col-span-6">
-                        <TextEditor isClear={false} onChangeData={(text) => {}} />
+                        <TextEditor isClear={false} content={description} onChangeData={(text) => setDescription(text.data)} />
                     </div>
                 </div>
 
@@ -195,7 +259,7 @@ export default function UpdateProduct() {
                 <div className='grid grid-cols-12 gap-4 mt-4 mb-8'>
                     <div className="col-span-6"></div>
                     <div className="col-span-3 text-right">
-                        <button className='ml-auto block w-[150px] text-center p-2 mt-3 rounded-md bg-slate-300 hover:bg-slate-400 active:bg-slate-500 cursor-pointer'>変更する</button>
+                        <button className='ml-auto block w-[150px] text-center p-2 mt-3 rounded-md bg-slate-300 hover:bg-slate-400 active:bg-slate-500 cursor-pointer' onClick={handleUpdateProduct}>変更する</button>
                     </div>
                 </div>
             </div>

@@ -57,7 +57,7 @@ const EditSocial = ({profileButton}) => {
   const [backgroundColor, setBackgroundColor] = useState("#f3f4f6");
   const [openColorDialog, setOpenColorDialog] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState("");
-  
+
   const [publishData, setPublishData] = useState({
     'bgColor':'',
     'bgURL':'',
@@ -73,7 +73,7 @@ const EditSocial = ({profileButton}) => {
     'phoneNumber' : '',
     'mobilePhoneNumber' : '',
     'mailAddress' : '',
-    'address' : '',            
+    'address' : '',
     'idCard' : {
       'idCard':[]
     },
@@ -111,7 +111,7 @@ const EditSocial = ({profileButton}) => {
       toast.error(err.message);
       console.log(err)
     }
-    
+
   }
   const moveItem = (fromIndex, toIndex) => {
     const updatedItems = [...profileData];
@@ -125,9 +125,9 @@ const EditSocial = ({profileButton}) => {
   //   }
   // });
   const handleProfileData = (data) =>{
-    if((data.type==="oneImage" && data.data) 
-      || (data.type==="twoImage" && data.data.length === 2) 
-      || (data.type==="threeImage" && data.data.length === 3) 
+    if((data.type==="oneImage" && data.data)
+      || (data.type==="twoImage" && data.data.length === 2)
+      || (data.type==="threeImage" && data.data.length === 3)
       || (data.type==="fourImage" && data.data.length === 4)
       || (data.type==="videoLink" && data.data)
       || (data.type==="text" && data.data)
@@ -147,7 +147,7 @@ const EditSocial = ({profileButton}) => {
     else {
       console.log("Just fill in all fields.")
     }
-    
+
   }
 
   const deleteProfileData = (id) => {
@@ -165,7 +165,7 @@ const EditSocial = ({profileButton}) => {
   const handleCheck = (check) => {
     if(currentData.data){
       const separatedata = { ...currentData };
-      
+
       const updatedData = { data: { ...separatedata.data, isDownload: check }, type: "slideImage" };
       console.log(updatedData);
       setCurrentData(updatedData);
@@ -184,13 +184,13 @@ const EditSocial = ({profileButton}) => {
       setIsClear(false);
     }, 1000)
   }
-  
+
   const handleModal = (e) =>{
     console.log(e.target.getAttribute('type'));
     setCreateType(e.target.getAttribute('type'));
     setOpen(true);
   }
-  
+
 
   const handleClose = () => {
     setOpen(false);
@@ -354,11 +354,11 @@ const EditSocial = ({profileButton}) => {
       }
     }
 
-    setPublishData((pre)=>{  
+    setPublishData((pre)=>{
       console.log("PublishData: ", {...pre, snsTree_Data:newOnlineCardData});
       return {...pre, snsTree_Data:newOnlineCardData}
     });
-    
+
   }
   const handlePublish = async () => {
     updateAllForPublish();
@@ -405,7 +405,7 @@ const EditSocial = ({profileButton}) => {
         <Link onClick={()=>{updateAllForPublish(); setShowPreviewModal(true)}} className="px-4 py-1 rounded-lg bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:bg-purple-800 h-[37px] text-white text-[18px]">プレビュー</Link>
         <Link to="/social" className="min-[440px]:px-4 py-1 rounded-lg bg-orange-400 hover:bg-orange-500 active:bg-orange-600 focus:bg-orange-700 h-[37px] text-white max-[440px]:h-[25px] max-[440px]:px-2 max-[440px]:text-sm text-[18px]">ビジネス向け</Link>
       </div>
-			
+
       <div className="min-w-[320px] w-[50%] mx-auto pt-1">
       <div className='p-[10px] flex justify-end mt-32'>
           <div onClick={() => {setOpenColorDialog(true)}} className='bg-red-400 inline-block cursor-pointer hover:bg-red-500 text-white mr-3 px-5 py-1 rounded-lg'>背景</div>
@@ -439,7 +439,7 @@ const EditSocial = ({profileButton}) => {
                           strokeWidth="0.5"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                        >              
+                        >
                           <line x1="12" y1="10" x2="12" y2="14" />
                           <line x1="10" y1="12" x2="14" y2="12" />
                         </svg>
@@ -462,7 +462,7 @@ const EditSocial = ({profileButton}) => {
                       </div>
                     )
                   }
-                  
+
                 </div>
               )
             }
@@ -470,14 +470,14 @@ const EditSocial = ({profileButton}) => {
           </DialogActions>
         </Dialog>
         <ImageSlider onChangeData={(data)=>{setPublishData((pre)=>({...pre, idCard:{idCard:data}}))}} />
-        <div className="flex flex-col justify-center -mt-[85px] mb-[40px] items-center">
+        <div className="flex flex-col justify-center mb-[40px] items-center">
           <AvatarUploader onChangeData = {(data)=>{setPublishData((pre)=>({...pre, faceImg:data}))}} />
           <input type="text" onChange={(e)=>{setPublishData((pre)=>({...pre, accountName:e.target.value}))}} placeholder="アカウント名" className='border rounded-lg p-3 my-4 text-lg w-[70%]' />
           <input type="text" onChange={(e)=>{setPublishData((pre)=>({...pre, profile:e.target.value}))}} placeholder="プロフィール" className='border rounded-lg p-3 text-lg w-[70%]' />
 				</div>
         {/* <DraggableForm /> */}
         <DndProvider backend={HTML5Backend}>
-          { 
+          {
             profileData && profileData.map((item, index) =>(
               <Listcomponent key = {index} id = {index} index={index} profileListData={item} moveItem={moveItem} isDelete = {deleteProfileData} />
             ))
@@ -494,7 +494,7 @@ const EditSocial = ({profileButton}) => {
       <Modal
         open={open}
         onClose={handleClose}
-        keepMounted 
+        keepMounted
         className="w-full flex justify-center items-center"
       >
         <div className="w-[40%] aspect-[16/9] max-[960px]:w-[50%] max-[640px]:w-[320px] rounded-lg p-[20px] bg-white items-center">
@@ -563,8 +563,8 @@ const EditSocial = ({profileButton}) => {
                 <div className="w-[400px] h-[300px] flex flex-col items-center mx-auto shadow rounded-md bg-white">
                   <div className="w-full flex justify-between items-center p-2 bg-slate-400 mb-10 rounded-t-md">
                     <h2 className="font-extrabold text-lg">予約設定</h2>
-                    <div className="w-[20px] h-[20px] aspect-square bg-cover cursor-pointer" style={{backgroundImage:'url("image/close.svg")'}} onClick={()=>setArrangementOpen(false)}></div> 
-                  </div>            
+                    <div className="w-[20px] h-[20px] aspect-square bg-cover cursor-pointer" style={{backgroundImage:'url("image/close.svg")'}} onClick={()=>setArrangementOpen(false)}></div>
+                  </div>
                   <div>
                     <h2>公開日時</h2>
                     <Datetimepicker />

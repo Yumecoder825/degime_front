@@ -1,8 +1,8 @@
 import axios from "axios";
 import {getAccessToken} from "../auth";
 
-export const myConfig = { apiUrl: 'https://ik1-129-71227.vs.sakura.ne.jp/api' };
-// export const myConfig = { apiUrl: 'http://localhost:8000/api' };
+// export const myConfig = { apiUrl: 'https://ik1-129-71227.vs.sakura.ne.jp/api' };
+export const myConfig = { apiUrl: 'http://localhost:8000/api' };
 
 export class Apis {
     static setAuthToken(token) {
@@ -22,7 +22,7 @@ export class Apis {
                 `${myConfig.apiUrl}/${url}`,
                 body
             );
-            if (res.status === 200) {
+            if (res.status === 201) {
                 return { success: true, data: res.data };
             }
             return { success: false, data: res.data };
@@ -39,7 +39,7 @@ export class Apis {
                 `${myConfig.apiUrl}/${url}`,
                 body
             );
-            if (res.status === 200) {
+            if (res.status === 200 || res.status === 201) {
                 return { success: true, data: res.data };
             }
             return { success: false, data: res.data };
@@ -69,7 +69,7 @@ export class Apis {
             const res = await axios.delete(
                 `${myConfig.apiUrl}/${url}`
             );
-            if (res.status === 200) {
+            if (res.status === 204) {
                 return { success: true, data: res.data };
             }
             return { success: false, data: res.data };

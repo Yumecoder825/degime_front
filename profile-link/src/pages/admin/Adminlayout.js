@@ -11,6 +11,7 @@ import {
   Store,
   TrendingUpOutlined
 } from "@mui/icons-material";
+import {useAuthContext} from "../../auth/context";
 
 const menus = [
   { icon: <Group/>, path: "/admin/users", label: "ユーザーリスト"},
@@ -38,10 +39,19 @@ const menus = [
 ]
 
 export default function Adminlayout() {
+  const { user, loading } = useAuthContext();
   const navigate = useNavigate();
   const location = useLocation();
   const [tab, setTab] = useState(null);
   const tabList = menus;
+
+  useEffect(() => {
+    if (!loading) {
+      if (!user || !user.is_superuser) {
+        navigate("/dashboard");
+      }
+    }
+  }, [user, loading]);
 
   useEffect(() => {
     for (const tab of tabList) {
