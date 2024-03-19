@@ -3,7 +3,7 @@
 }
 
 .selectiveBackground {
-  height: 450px;
+  height: 300px;
   width: 100%;
   background-image: url(/public/big-image.jpeg);
   background-repeat: no-repeat;
