@@ -315,7 +315,14 @@ const Dashboard = (props) => {
                       </svg>
                     </div>
                   </span>
-                    <Link className="onlinePattern button mainButtonMargin" to="/online">
+                  <Link className="onlinePattern button mainButtonMargin"
+                     to={user ? "/online" : ""}
+                     onClick={() => {
+                       if (!user) {
+                        setShowLoginModal(true);
+                       }
+                     }}
+                     >
                         <div className="space"></div>
                         <div className="buttonName">オンライン名刺編集</div>
                         <div className="plusIcon">
@@ -333,7 +340,14 @@ const Dashboard = (props) => {
                             </svg>
                         </div>
                     </Link>
-                    <Link className="snsPattern button mainButtonMargin" to="/editsocial">
+                    <Link className="snsPattern button mainButtonMargin"
+                    to={user ? "/editsocial" : ""}
+                    onClick={() => {
+                      if (!user) {
+                       setShowLoginModal(true);
+                      }
+                    }}
+                    >
                         <div className="space"></div>
                         <div className="buttonName">SNS向けリンクツリー</div>
                         <div className="plusIcon">
@@ -351,16 +365,37 @@ const Dashboard = (props) => {
                             </svg>
                         </div>
                     </Link>
-                    <Link className="contactManage button small-btn" to="/contact">
+                    <Link className="contactManage button small-btn"
+                    to={user ? "/contact" : ""}
+                    onClick={() => {
+                      if (!user) {
+                       setShowLoginModal(true);
+                      }
+                    }}
+                    >
                         <div className="buttonName">名刺管理</div>
                         {/* <div className="dashBoardBadge mainContactBadge">
               {props.contact_badge}
             </div> */}
                     </Link>
-                    <Link className="degimeWrite button small-btn" to="/write">
+                    <Link className="degimeWrite button small-btn"
+                    to={user ? "/write" : ""}
+                    onClick={() => {
+                      if (!user) {
+                       setShowLoginModal(true);
+                      }
+                    }}
+                    >
                         <div className="buttonName">degimeカードに書き込む</div>
                     </Link>
-                    <Link className="degimeBuy button small-btn" to="/buy">
+                    <Link className="degimeBuy button small-btn"
+                    to={user ? "/buy" : ""}
+                    onClick={() => {
+                      if (!user) {
+                       setShowLoginModal(true);
+                      }
+                    }}
+                    >
                         <div className="buttonName">degimeカード購入する</div>
                     </Link>
                 </div>
