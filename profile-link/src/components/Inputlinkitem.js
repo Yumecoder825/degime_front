@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 
-export default function InputLinkItem({id, isClear, onChangeData}) {
+export default function InputLinkItem({id, isClear, onChangeData , initialData}) {
   // State to hold the selected link type (Youtube, Instagram, etc.)
   const [selectedLinkType, setSelectedLinkType] = useState('');
   const [urlLink, setUrlLink] = useState('');
@@ -13,13 +13,18 @@ export default function InputLinkItem({id, isClear, onChangeData}) {
   const dropdownIconRef = useRef(null);
   const [selectedLinkIcon, setSelectedLinkIcon] = useState(null);
 
-  useEffect(()=>{
-    if(isClear){
+  useEffect(() => {
+    if (initialData && !isClear) {
+      setSelectedLinkType(initialData.title || '');
+      setSelectedLinkIcon(initialData.iconLink || null);
+      setUrlLink(initialData.urlLink || '');
+    } else if (isClear) {
       setSelectedLinkIcon(null);
       setSelectedLinkType('');
       setUrlLink('');
     }
-  }, [isClear])
+  }, [initialData, isClear]);
+  
   useEffect(() => {
 
     const handleClickOutside = (event) => {

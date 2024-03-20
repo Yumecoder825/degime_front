@@ -3,10 +3,17 @@ import {Close} from "@mui/icons-material";
 import {FileUpload} from "../utilities/upload";
 import {CircularProgress} from "@mui/material";
 
-const ImageSlider = ({onChangeData}) => {
+const ImageSlider = ({onChangeData , initialData}) => {
     const [images, setImages] = useState([]);
     const [lastImageIndex, setLastImageIndex] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (initialData && initialData.length > 0) {
+          setImages(initialData);
+          setLastImageIndex(initialData.length - 1);
+        }
+      }, [initialData]);    
 
     const handleImageUpload = async (event) => {
         const uploadedImages = event.target.files[0];

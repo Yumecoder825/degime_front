@@ -315,7 +315,7 @@ const Dashboard = (props) => {
                       </svg>
                     </div>
                   </span>
-                  <Link className="onlinePattern button mainButtonMargin"
+                    <Link className="onlinePattern button mainButtonMargin"
                      to={user ? "/online" : ""}
                      onClick={() => {
                        if (!user) {
