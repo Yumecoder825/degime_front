@@ -76,7 +76,7 @@ export default function PublicView({publishData}) {
             }}
           >
           {images && (
-            <div className="flex items-center justify-between absolute bottom-0 left-0 right-0 px-4 py-2 bg-gray-800">
+            <div className="flex items-center justify-start absolute bottom-0 left-0 right-0 px-4 py-2 bg-gray-800">
               {images.map((image, index) => (
                 <img
                   key={index}

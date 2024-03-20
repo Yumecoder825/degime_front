@@ -106,9 +106,9 @@ const App = () => {
               <Route path="contract/3" element={<ContractThree />}/>
               <Route path="contract/4" element={<ContractFour />}/>
             </Route>
-            <Route path="/online" element={<Online/>} />
+            <Route path="/onlineclosed" element={<Online/>} />
             <Route path="/social" element={<Social/>} />
-            <Route path="/editonline" element={<EditOnline profileButton={profileButton}/>} />
+            <Route path="/online" element={<EditOnline profileButton={profileButton}/>} />
             <Route path="/editsocial" element={<EditSocial profileButton={profileButton}/>} />
             <Route path="/layout" element={<Layout contact_badge = {4} chat_badge = {8}/>} >
               <Route path="list" >

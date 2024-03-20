@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import React, { useState , useEffect } from 'react';
+// import { toast } from 'react-toastify';
 import {FileUpload} from "../utilities/upload";
 
-const AvatarUploader = ({onChangeData}) => {
+const AvatarUploader = ({onChangeData , initialData}) => {
   const [selectedImage, setSelectedImage] = useState(null);
+
+  useEffect(() => {
+    if (initialData) {
+      setSelectedImage(initialData);
+    }
+  }, [initialData]);
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];

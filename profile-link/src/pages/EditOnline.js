@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState , useEffect} from "react";
 import { Link } from "react-router-dom";
 
 import { DndProvider } from 'react-dnd';
@@ -52,7 +52,10 @@ const EditOnline = ({profileButton}) => {
   const [open, setOpen] = useState(false);
   const [arrangementOpen, setArrangementOpen] = useState(false);
   const [createType, setCreateType] = useState("");
-  const [iconLink, setIconLink] = useState([]);
+  const [iconLink, setIconLink] = useState(() => {
+  const iconLink_local = localStorage.getItem('Icons');
+    return iconLink_local ? JSON.parse(iconLink_local) : [];
+    });
   const [isClear, setIsClear] = useState(false);
   const [showPublihModal, setShowPublihModal] = useState(false);
   const [publishLink, setPublishLink] = useState(localStorage.getItem('username'));
@@ -60,41 +63,62 @@ const EditOnline = ({profileButton}) => {
 
   const [backgroundColor, setBackgroundColor] = useState("#f3f4f6");
   const [openColorDialog, setOpenColorDialog] = useState(false);
-  const [backgroundImage, setBackgroundImage] = useState("");
+  const [backgroundImage, setBackgroundImage] = useState('');
 
-  const [publishData, setPublishData] = useState({
-    'bgColor':'',
-    'bgURL':'',
-    'wordColor':'',
-    'cardColor':'',
-    'cardURL':'',
-    'url_name': '',
-    'faceImg' : '',
-    'realName' : '',
-    'company_url' : '',
-    'companyName' : '',
-    'position' : '',
-    'phoneNumber' : '',
-    'mobilePhoneNumber' : '',
-    'mailAddress' : '',
-    'address' : '',            
-    'idCard' : {
-      'idCard':[]
-    },
-    'socialLink':{},
-    'onlineCard_Data': {
-        'imgLink1' : [],
-        'imgLink2' : [],
-        'imgLink3' : [],
-        'imgLink4' : [],
-        'videoLink' : [],
-        'textLink' : [],
-        'mapLink' : [],
-        'selfProfile' : [],
-        'slideLink' : [],
-        'spaceAdd' : [],
+  const [publishData, setPublishData] = useState(() => {
+    const publish_local = localStorage.getItem('Publish_cache');
+    return publish_local ? JSON.parse(publish_local) : {
+      'bgColor': '',
+      'bgURL': '',
+      'wordColor': '',
+      'cardColor': '',
+      'cardURL': '',
+      'url_name': '',
+      'faceImg': '',
+      'realName': '',
+      'company_url': '',
+      'companyName': '',
+      'position': '',
+      'phoneNumber': '',
+      'mobilePhoneNumber': '',
+      'mailAddress': '',
+      'address': '',
+      'idCard': {
+        'idCard': []
+      },
+      'socialLink': {},
+      'onlineCard_Data': {
+        'imgLink1': [],
+        'imgLink2': [],
+        'imgLink3': [],
+        'imgLink4': [],
+        'videoLink': [],
+        'textLink': [],
+        'mapLink': [],
+        'selfProfile': [],
+        'slideLink': [],
+        'spaceAdd': [],
       }
+    };
   });
+
+  useEffect(() => {
+    const publish_local = localStorage.getItem('Publish_cache');
+    if (publish_local) {
+      setPublishData(JSON.parse(publish_local));
+    }
+    const iconLink_local = localStorage.getItem('Icons');
+    if (iconLink_local) {
+      setIconLink(JSON.parse(iconLink_local));
+    }
+
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('Publish_cache', JSON.stringify(publishData));
+    localStorage.setItem('Icons', JSON.stringify(iconLink));
+
+  }, [publishData , iconLink]);
 
   //Update all publish data
   const updateAllForPublish = () => {
@@ -462,7 +486,7 @@ const EditOnline = ({profileButton}) => {
                     onChange={handleImageUpload}
                   />
                   {
-                    backgroundImage !== "" && (
+                    backgroundImage  !== "" && (
                       <div className='absolute top-2 -right-6 cursor-pointer' onClick={() => {setBackgroundImage("")}}>
                         <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M4.91498 15.4949L9.03117 11.3182L4.7256 7.07504L7.01035 4.75666L11.3159 8.99978L15.4321 4.823L17.8609 7.21656L13.7447 11.3933L18.0503 15.6365L15.7655 17.9548L11.46 13.7117L7.34376 17.8885L4.91498 15.4949Z" fill="black" fillOpacity="0.3"/>
@@ -477,16 +501,16 @@ const EditOnline = ({profileButton}) => {
             <Button onClick={() => setOpenColorDialog(false)}>はい</Button>
           </DialogActions>
         </Dialog>
-        <ImageSlider onChangeData={(data)=>{setPublishData((pre)=>({...pre, idCard:{idCard:data}}))}} />
+        <ImageSlider onChangeData={(data)=>{setPublishData((pre)=>({...pre, idCard:{idCard:data}}))}} initialData={publishData.idCard.idCard} />
         <div className="flex justify-between mt-[60px] mb-[40px] items-center relative">
-          <AvatarUploader onChangeData = {(data)=>{setPublishData((pre)=>({...pre, faceImg:data}))}} />
+          <AvatarUploader onChangeData = {(data)=>{setPublishData((pre)=>({...pre, faceImg:data}))}} initialData={publishData.faceImg} />
           <div className="w-[60%]">
-            <input onChange={(e)=>{setPublishData((pre)=>({...pre, realName:e.target.value}))}} type="text" name="online_name" id="online_name" className="pl-[5px] w-full border-2 h-10 rounded-lg focus:border-red-500 focus:ring-1 focus:border-2 focus:rounded-lg placeholder:text-bold" placeholder="氏名"></input>
+            <input onChange={(e)=>{setPublishData((pre)=>({...pre, realName:e.target.value}))}} type="text" name="online_name" id="online_name" className="pl-[5px] w-full border-2 h-10 rounded-lg focus:border-red-500 focus:ring-1 focus:border-2 focus:rounded-lg placeholder:text-bold" placeholder="氏名" value={publishData.realName || ''}></input>
             <div className="flex w-full justify-between mt-8">
-              <Inputlinkitem id={0} onChangeData={handleiconLink} />
-              <Inputlinkitem id={1} onChangeData={handleiconLink} />
-              <Inputlinkitem id={2} onChangeData={handleiconLink} />
-              <Inputlinkitem id={3} onChangeData={handleiconLink} />
+              <Inputlinkitem id={0} onChangeData={handleiconLink} initialData={iconLink[0]} />
+              <Inputlinkitem id={1} onChangeData={handleiconLink} initialData={iconLink[1]} />
+              <Inputlinkitem id={2} onChangeData={handleiconLink} initialData={iconLink[2]} />
+              <Inputlinkitem id={3} onChangeData={handleiconLink} initialData={iconLink[3]} />
             </div>
           </div>
         </div>
